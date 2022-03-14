@@ -230,7 +230,32 @@ MulticopterAttitudeControl::generate_attitude_setpoint(float dt, bool reset_yaw_
 void
 MulticopterAttitudeControl::control_attitude()
 {
-	_v_att_sp_sub.update(&_v_att_sp);
+	bool sp_updated = _v_att_sp_sub.update(&_v_att_sp);
+
+	if (sp_updated && (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_OFFBOARD
+			   && (_v_control_mode.flag_control_attitude_enabled &&
+			       !_v_control_mode.flag_control_position_enabled &&
+			       !_v_control_mode.flag_control_velocity_enabled &&
+			       !_v_control_mode.flag_control_acceleration_enabled))) {
+
+		// Get the current body to world rotation
+		matrix::Dcmf R_body = matrix::Quatf(_v_att_sp.q_d);
+		matrix::Vector3f thrust_world = R_body * matrix::Vector3f(_v_att_sp.thrust_body);
+		Eulerf new_att_sp_euler(.0f, .0f, _v_att_sp.yaw_body);
+		matrix::Quatf new_att_sp_q = new_att_sp_euler;
+		matrix::Dcmf R_body_new = new_att_sp_q;
+		matrix::Dcmf R_world_new = R_body_new.T();
+		matrix::Vector3f thrust_body = R_world_new * thrust_world;
+
+		for (int i = 0; i < 3; ++i) {
+			_v_att_sp.thrust_body[i] = thrust_body(i);
+		}
+
+		_v_att_sp.roll_body = .0f;
+		_v_att_sp.pitch_body = .0f;
+		new_att_sp_q.copyTo(_v_att_sp.q_d);
+	}
+
 	_rates_sp = _attitude_control.update(Quatf(_v_att.q), Quatf(_v_att_sp.q_d), _v_att_sp.yaw_sp_move_rate);
 }
 

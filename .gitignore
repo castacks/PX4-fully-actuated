@@ -47,6 +47,8 @@ GTAGS
 *.files
 *.includes
 
+.vscode/
+
 # CLion ignores
 .idea
 cmake-build-*/

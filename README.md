@@ -22,21 +22,17 @@ The current tilted-hex airframe is defined to have 30 degrees of side tilt, simi
 
 After compiling the firmware and uploading it on your hardware (see [here](https://dev.px4.io/master/en/setup/building_px4.html)), choose `Hexarotor x with tilted arms` airframe. This firmware also adds a set of parameters all starting with `OMNI_`. To see the description of the parameters, please refer [here](https://github.com/castacks/PX4-fully-actuated/blob/v1.10-master/src/modules/mc_pos_control/mc_pos_control_params.c). The most important parameter is `OMNI_ATT_MODE` which supports the attitude strategies. 
 
-We have tested the firmware only with Pixracer. If you have flash memory issues when compiling for your hardware, one solution is to comment the geometries that you don't need in [this CMakeLists file](https://github.com/castacks/PX4-fully-actuated/blob/v1.10-master/src/lib/mixer/MultirotorMixer/CMakeLists.txt).
+We have tested the firmware only with Pixracer. If you have flash memory issues when compiling for your hardware, one solution is to comment out the geometries that you don't need in [this CMakeLists file](https://github.com/castacks/PX4-fully-actuated/blob/v1.10-master/src/lib/mixer/MultirotorMixer/CMakeLists.txt).
 
 ### Simulation and more
 
 More detailed guide will be incrementally added here. Please reach us directly or submit an issue on this repository if you have specific questions, concerns, feedback or bug reports.
 
-To simulate using gazebo, you need to add the model and the world of your fully-actuated UAV to the firmware. Optionally you can modify the model files for our hexarotor (with all arms tilted for 30 degrees). 
-
-To enable simulation for our multirotor, copy the contents of the `world` and `model` folders from `sitl_gazebo_fully_actuated` to the `world` and `model` folders in `Tools/sitl_gazebo`. Now you can run the SITL simulation of our UAV using the following command:
+To simulate using gazebo, you can run the SITL simulation of our UAV using the following command:
 
 ```
 make px4_sitl gazebo_hexa_x_tilt
 ```
-
-If you get `gazebo_opticalflow_plugin.h:43:18: error: ‘TRUE’ was not declared in this scope`, simply replace `TRUE` with `true` in `Tools/sitl_gazebo/include/gazebo_opticalflow_plugin.h` line 43.
 
 ### Disclaimer
 
@@ -47,3 +43,7 @@ Finally, we are still in the testing/development phase and the code is in no way
 ### Acknowledgment
 
 In the initial commits, the idea of how to extend PX4 to support 3-D thrust and fully-actuated vehicles have been taken from [here](https://github.com/jlecoeur/Firmware/pull/1).
+
+### Contact
+
+Azarakhsh Keipour (keipour@gmail.com)

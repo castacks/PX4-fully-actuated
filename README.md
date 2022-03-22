@@ -37,11 +37,13 @@ echo 'export PX4PATH=$HOME/catkin_ws/src/Firmware' >> ~/.bashrc
 
 Now make sure you properly set the Gazebo path to the one in this repo. Add the following to the end of your `.bashrc` file:
 
+```
 source /usr/share/gazebo/setup.sh
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$PX4PATH:$PX4PATH/Tools/sitl_gazebo
 export GAZEBO_PLUGIN_PATH=$PX4PATH/build/px4_sitl_default/build_gazebo:$GAZEBO_PLUGIN_PATH
 export GAZEBO_MODEL_PATH=$PX4PATH/Tools/sitl_gazebo/models:$GAZEBO_MODEL_PATH
 export GAZEBO_RESOURCE_PATH=$PX4PATH/Tools/sitl_gazebo/worlds:$GAZEBO_RESOURCE_PATH
+```
 
 ## How to use
 
